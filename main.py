@@ -42,6 +42,7 @@ class SheetAPI:
                 self.database.update_last_record(self.values[-1][0])
                 return self.create_doc()
             else:
+                print(self.values[-1][0])
                 print('Its not new record')
                 return False
 
