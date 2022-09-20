@@ -1,3 +1,4 @@
+
 import os.path
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -7,6 +8,8 @@ from googleapiclient.errors import HttpError
 
 from database import Database
 from document import DocumentController
+
+DEBUG_MODE=True
 
 class SheetAPI:
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -38,7 +41,7 @@ class SheetAPI:
             if not self.values:
                 return False
 
-            if self.database.get_last_record()!=self.values[-1][0]:
+            if self.database.get_last_record()!=self.values[-1][0] or DEBUG_MODE:
                 self.database.update_last_record(self.values[-1][0])
                 return self.create_doc()
             else:
@@ -57,6 +60,8 @@ class SheetAPI:
             return False
         
     def organization_check(self, value):
+        if DEBUG_MODE:
+            return True
         if str(value).find('№10 (уд. Анны Ахматовой, д.18) - школа')!=-1:
             return True
         if str(value).find('детский сад')!=-1:
@@ -69,7 +74,7 @@ def main():
     if not last_line:
         return False
     replacer = DocumentController(last_line)
-    replacer.make_document()
+    doc_name = replacer.make_document()
 
 if __name__ == '__main__':
     main()

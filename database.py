@@ -18,3 +18,15 @@ class Database:
         with self.connection:
             self.cursor.execute(f"INSERT INTO RecordTag (value) VALUES (?)",(record_date,))
             self.connection.commit()
+
+    def create_user(self, id, name) -> bool:
+        with self.connection:
+            try:
+                # Пишу запросы через жопу и мне пох
+                self.cursor.execute(f"INSERT INTO User (id, name) VALUES ({id}, '{name}');")
+                return True
+            except Exception as error:
+                print(f'[Ошибка добавления пользователя в БД] {error}')
+                return False
+            finally:
+                self.connection.commit()
