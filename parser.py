@@ -9,7 +9,7 @@ from googleapiclient.errors import HttpError
 from database import Database
 from document import DocumentController
 
-DEBUG_MODE=True
+DEBUG_MODE=False
 
 class SheetAPI:
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -68,13 +68,18 @@ class SheetAPI:
             return True
         return False
 
-def main():
+def make_document():
     API = SheetAPI(Database())
     last_line = API.gat_values_from_sheet()
     if not last_line:
         return False
     replacer = DocumentController(last_line)
     doc_name = replacer.make_document()
+    return doc_name
 
-if __name__ == '__main__':
-    main()
+
+    # start_bot()
+    # print(make_document())
+    # loop = asyncio.new_event_loop()
+    # asyncio.set_event_loop(loop)
+    # asyncio.run(start_polling())

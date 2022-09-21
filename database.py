@@ -30,3 +30,8 @@ class Database:
                 return False
             finally:
                 self.connection.commit()
+
+    def get_user_list(self):
+        with self.connection:
+            self.cursor.execute(f"SELECT id FROM User")
+            return self.cursor.fetchall()
