@@ -7,7 +7,7 @@ class DocumentController:
         # for i,cell in enumerate(self.data):
         #     print(i,cell,'\n')
 
-    def make_document(self):
+    def generate_document(self):
         if self.what_document_type(self.data[4]):
             return self.make_document_for_exam()
         else:

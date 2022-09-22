@@ -33,7 +33,7 @@ class SheetAPI:
             with open('token.json', 'w') as token:
                 token.write(self.creds.to_json())
 
-    def gat_values_from_sheet(self):
+    def get_values_from_sheet(self, last_twenty:bool):
         '''self.values have all data from table'''
         try:
             service = build('sheets', 'v4', credentials=self.creds)
@@ -42,6 +42,10 @@ class SheetAPI:
             self.values = result.get('values', [])[1:]
             if not self.values:
                 return False
+            
+            if last_twenty:
+                return self.values[len(self.values)-20:len(self.values)]
+               
 
             last_line_index, last_date_value = self.find_last_date_line()
             print(last_line_index, last_date_value, self.database.get_last_record())
@@ -68,6 +72,7 @@ class SheetAPI:
         date_dict = {index:date_value[0] for index, date_value in enumerate(self.values)}
         # print(self.date_dict)
         ordered_data = sorted(date_dict.items(), key = lambda x:datetime.strptime(x[1], "%d.%m.%Y %H:%M:%S"), reverse=True)
+        # print(ordered_data)
         # print(ordered_data[0][0],ordered_data[0][1])
         return ordered_data[0][0],ordered_data[0][1]
         
@@ -81,14 +86,27 @@ class SheetAPI:
             return True
         return False
 
+
 def make_document():
     API = SheetAPI(Database())
-    last_line = API.gat_values_from_sheet()
+    last_line = API.get_values_from_sheet(last_twenty=False)
     if not last_line:
         return False
     replacer = DocumentController(last_line)
-    doc_name = replacer.make_document()
+    doc_name = replacer.generate_document()
     return doc_name
+
+
+def make_document_for_line(last_line):
+    replacer = DocumentController(last_line)
+    doc_name = replacer.generate_document()
+    return doc_name
+
+
+def get_last_twenty():
+    API = SheetAPI(Database())
+    last_twenty_line = API.get_values_from_sheet(last_twenty=True)
+    return last_twenty_line
 
 
     # start_bot()

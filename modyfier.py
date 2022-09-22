@@ -45,7 +45,7 @@ class Modyfier:
         return place
 
     def get_teacher_list(self, teacher_list):
-        return ", ".join(teacher['cols'][1] for teacher in teacher_list)
+        return ", ".join(str(teacher['cols'][1]).strip() for teacher in teacher_list)
         # print(s)
         # for teacher in teacher_list:
         #     teacher['cols'][1]
