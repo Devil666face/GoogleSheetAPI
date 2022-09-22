@@ -83,6 +83,7 @@ class Modyfier:
             return [teacher_dict]
 
         def make_other_teacher(mainteacher_line, otherteacher_line):
+            # word_for_replace = ['пед.орг.', ' второй учитель', 'кл. рук', 'классный руководитель', 'учитель начальных классов', 'учитель', 'воспитатель физо', ' учитель', 'психолог', ' воспитатель', 'педагог-организатор', 'классный руководитель, учитель', 'методист', 'воспитатель кадетского класса', 'инструктор', 'учитель, кл.рук', 'воспитатель', 'воспитатель по МУЗО', 'соц. педагог', 'воспитатель по ФИЗО', 'кл. руководитель', 'педагог']
             other_teacher_list = []
             splited_otherteacher_line = []
             print(re.findall(r'\w+',otherteacher_line))
@@ -91,8 +92,8 @@ class Modyfier:
                     splited_otherteacher_line.append(word)
             print(splited_otherteacher_line)
             step = 4
-            if len(splited_otherteacher_line)%3==0:
-                step = 3
+            # if len(splited_otherteacher_line)%3==0:
+            #     step = 3
             for index in range(0,len(splited_otherteacher_line), step):
                 try:
                     teacher_name = f'{splited_otherteacher_line[index]} {splited_otherteacher_line[index+1]} {splited_otherteacher_line[index+2]}'

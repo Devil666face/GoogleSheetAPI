@@ -70,7 +70,7 @@ async def send_document():
 
 
 if __name__ == '__main__':
-    scheduler.add_job(send_document,"interval",minutes=1)
+    scheduler.add_job(send_document,"interval",minutes=5)
     # scheduler.add_job(send_document,"interval",seconds=5)
     scheduler.start()
     executor.start_polling(dp, skip_updates=True)
