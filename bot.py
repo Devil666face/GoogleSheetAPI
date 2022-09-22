@@ -16,6 +16,7 @@ from dataclasses import dataclass
 @dataclass
 class Values:
     last_twenty_values:list
+    max_len:int
 
 bot = Bot(token='5446413703:AAEXTpTWUKYUDDxzJQPUSW8qVp2zTgaD76Q', parse_mode="HTML")
 dp = Dispatcher(bot,storage=MemoryStorage())
@@ -32,8 +33,8 @@ async def start(message: types.Message):
 
 @dp.message_handler(Text(equals='Создать приказ'))
 async def make_order(message: types.Message, state: FSMContext):
-    Values.last_twenty_values = get_last_twenty()
-    await message.answer('Выберите данные для создания документа',reply_markup=keyboard.inline_get_order_kb(Values.last_twenty_values))
+    Values.last_twenty_values, Values.max_len= get_last_twenty()
+    await message.answer('Выберите данные для создания документа',reply_markup=keyboard.inline_get_order_kb(Values.last_twenty_values,Values.max_len+2))
     
 
 @dp.callback_query_handler(text_contains="valueline_")

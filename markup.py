@@ -10,10 +10,10 @@ class Keyboard:
         keyboard_main.add(*main_buttons)
         return keyboard_main
 
-    def inline_get_order_kb(self, last_twenty_values):
+    def inline_get_order_kb(self, last_twenty_values, max_value):
         inline_keyboard = types.InlineKeyboardMarkup(row_width=1)
         # print(last_twenty_values)
         for index,line in enumerate(last_twenty_values):
-            inline_keyboard.add(types.InlineKeyboardButton(text=f'{line[0]}\n{line[2]}\n{line[3]}\n{line[4]}'.replace('школа','ш.'),callback_data=f'valueline_{index}'))
+            inline_keyboard.add(types.InlineKeyboardButton(text=f'{max_value-(20-index)}|{line[0]}\n{line[2]}\n{line[3]}\n{line[4]}'.replace('школа','ш.'),callback_data=f'valueline_{index}'))
 
         return inline_keyboard

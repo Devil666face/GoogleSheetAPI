@@ -44,7 +44,7 @@ class SheetAPI:
                 return False
             
             if last_twenty:
-                return self.values[len(self.values)-20:len(self.values)]
+                return self.values[len(self.values)-20:len(self.values)], len(self.values)
                
 
             last_line_index, last_date_value = self.find_last_date_line()
@@ -105,8 +105,8 @@ def make_document_for_line(last_line):
 
 def get_last_twenty():
     API = SheetAPI(Database())
-    last_twenty_line = API.get_values_from_sheet(last_twenty=True)
-    return last_twenty_line
+    last_twenty_line, max_len = API.get_values_from_sheet(last_twenty=True)
+    return last_twenty_line, max_len
 
 
     # start_bot()
