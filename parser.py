@@ -1,5 +1,7 @@
 
 import os.path
+import datetime
+from datetime import datetime
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -37,28 +39,39 @@ class SheetAPI:
             service = build('sheets', 'v4', credentials=self.creds)
             sheet = service.spreadsheets()
             result = sheet.values().get(spreadsheetId=self.SAMPLE_SPREADSHEET_ID,range=self.SAMPLE_RANGE_NAME).execute()
-            self.values = result.get('values', [])
+            self.values = result.get('values', [])[1:]
             if not self.values:
                 return False
 
-            if self.database.get_last_record()!=self.values[-1][0] or DEBUG_MODE:
-                self.database.update_last_record(self.values[-1][0])
-                return self.create_doc()
+            last_line_index, last_date_value = self.find_last_date_line()
+            print(last_line_index, last_date_value, self.database.get_last_record())
+
+            if self.database.get_last_record()!=last_date_value or DEBUG_MODE:
+                self.database.update_last_record(last_date_value)
+                return self.create_doc(last_line_index)
             else:
-                print(self.values[-1][0])
-                print('Its not new record')
+                print(f'Its not new record {last_date_value}')
                 return False
 
         except HttpError as err:
             print(err)
 
-    def create_doc(self):
-        last_line = self.values[-1]
+    def create_doc(self, last_line_index):
+        last_line = self.values[last_line_index]
         if self.organization_check(last_line[2]):
             return(last_line)
         else:
             return False
+    
+    def find_last_date_line(self):
+        # for date_value in self.values:
+        date_dict = {index:date_value[0] for index, date_value in enumerate(self.values)}
+        # print(self.date_dict)
+        ordered_data = sorted(date_dict.items(), key = lambda x:datetime.strptime(x[1], "%d.%m.%Y %H:%M:%S"), reverse=True)
+        # print(ordered_data[0][0],ordered_data[0][1])
+        return ordered_data[0][0],ordered_data[0][1]
         
+
     def organization_check(self, value):
         if DEBUG_MODE:
             return True
