@@ -9,7 +9,7 @@ from aiogram.dispatcher.filters import Text
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from database import Database
 from datetime import datetime
-from parser import make_document, get_last_twenty, make_document_for_line
+from parser import make_document, get_last_twenty, make_document_for_line, get_for_current_line
 from markup import Keyboard
 from dataclasses import dataclass
 
@@ -17,6 +17,9 @@ from dataclasses import dataclass
 class Values:
     last_twenty_values:list
     max_len:int
+
+class StateBot(StatesGroup):
+    get_number = State()
 
 bot = Bot(token='5446413703:AAEXTpTWUKYUDDxzJQPUSW8qVp2zTgaD76Q', parse_mode="HTML")
 dp = Dispatcher(bot,storage=MemoryStorage())
@@ -29,6 +32,20 @@ keyboard = Keyboard()
 async def start(message: types.Message):
     await message.answer('Бот запущен.',reply_markup = keyboard.main_buttons())
     database.create_user(message.from_user.id, message.from_user.username)
+
+@dp.message_handler(state=StateBot.get_number)
+async def get_number(message: types.Message,state: FSMContext):
+    if str(message.text).isnumeric():
+        line = get_for_current_line(int(message.text)-2)
+        await send_document_for_line(message.from_user.id,line)
+    else:
+        await message.answer('Вы отправили некорректный номер.')
+    await state.finish()
+
+@dp.message_handler(Text(equals='Сформировать по номеру'))
+async def make_order_for_number(message: types.Message, state: FSMContext):
+    await message.answer('Отправьте номер строки из таблицы',reply_markup=keyboard.main_buttons())
+    await StateBot.get_number.set()
 
 
 @dp.message_handler(Text(equals='Создать приказ'))

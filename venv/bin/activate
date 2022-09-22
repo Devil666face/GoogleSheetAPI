@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/xu/Python/GoogleSheetAPI/venv"
+VIRTUAL_ENV="/home/king/pythonProject/GoogleSheetAPI/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

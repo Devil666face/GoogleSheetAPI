@@ -33,7 +33,7 @@ class SheetAPI:
             with open('token.json', 'w') as token:
                 token.write(self.creds.to_json())
 
-    def get_values_from_sheet(self, last_twenty:bool):
+    def get_values_from_sheet(self, last_twenty:bool, current_index=-1):
         '''self.values have all data from table'''
         try:
             service = build('sheets', 'v4', credentials=self.creds)
@@ -43,6 +43,9 @@ class SheetAPI:
             if not self.values:
                 return False
             
+            if current_index!=-1:
+                return self.values[current_index]
+
             if last_twenty:
                 return self.values[len(self.values)-20:len(self.values)], len(self.values)
                
@@ -107,6 +110,11 @@ def get_last_twenty():
     API = SheetAPI(Database())
     last_twenty_line, max_len = API.get_values_from_sheet(last_twenty=True)
     return last_twenty_line, max_len
+
+def get_for_current_line(current_index):
+    API = SheetAPI(Database())
+    return API.get_values_from_sheet(False,current_index)
+
 
 
     # start_bot()
