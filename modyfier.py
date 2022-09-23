@@ -34,8 +34,13 @@ class Modyfier:
             'teacherlist':self.get_teacher_list(teacher_list),
         }
         template.render(context)
-        template.save(f'{str(self.data[4]).strip()}.docx')
-        return (f'{str(self.data[4]).strip()}.docx')
+        doc_name = self.get_doc_name(self.data)
+        template.save(doc_name)
+        print(doc_name)
+        return doc_name
+
+    def get_doc_name(self,data):
+        return f'ОргПриказ - {data[3].split()[0]} {data[5]}.docx'
 
     def get_place(self, place:str):
         replace_list = ['О посещении','посещение','Посещение']
@@ -60,9 +65,12 @@ class Modyfier:
                 number_list.append(s[0])
             except:
                 pass
-        if int(Counter(number_list).most_common(1)[0][0])<=4:
-            return 'Н.Н. Рыбаковой'
-        else:
+        try:
+            if int(Counter(number_list).most_common(1)[0][0])<=4:
+                return 'Н.Н. Рыбаковой'
+            else:
+                return 'Е.В. Велесовой'
+        except:
             return 'Е.В. Велесовой'
         # return 'Н.Н. Рыбаковой' if int(Counter(number_list).most_common(1)[0][0])<=4 else 'Е.В. Велесовой'
 

@@ -12,6 +12,7 @@ from datetime import datetime
 from parser import make_document, get_last_twenty, make_document_for_line, get_for_current_line
 from markup import Keyboard
 from dataclasses import dataclass
+from aiogram.types import InputFile
 
 @dataclass
 class Values:
@@ -70,7 +71,8 @@ async def not_response(message: types.Message, state:FSMContext):
 
 async def send_document_for_line(user_id, line_values):
     doc_name = make_document_for_line(line_values)
-    await bot.send_document(user_id,open(doc_name,'rb'))
+    # await bot.send_document(user_id,open(doc_name,'rb'))
+    await bot.send_document(user_id,InputFile(doc_name, filename=doc_name))
     os.remove(doc_name)
 
 async def send_document():
@@ -81,7 +83,7 @@ async def send_document():
     print(users)
     for id in users:
         try:
-            await bot.send_document(id[0], open(doc_name,'rb'))
+            await bot.send_document(id[0], InputFile(doc_name, filename=doc_name))
         except Exception as ex:
             print(ex)
     os.remove(doc_name)     
