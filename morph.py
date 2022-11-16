@@ -1,32 +1,3 @@
-# import re
-# import pymorphy2
-
-# class Morph:
-#     def __init__(self, line, case_id) -> None:
-#         self.case_id = case_id
-#         self.splited_line = line.split()
-#         self.cased_list = []
-#         for word in self.splited_line:
-#             if word.istitle():
-#                 self.cased_list.append(self.get_word(word, True))
-#             else:
-#                 self.cased_list.append(self.get_word(word, False))
-
-#     def get_word(self, word, title):
-#         morph = pymorphy2.MorphAnalyzer()
-#         cases = morph.parse(word.strip())[0]
-#         try:
-#             # for index,word in enumerate(cases.lexeme):
-#             #     print(index,word.word)
-#             if title:
-#                 return str(cases.lexeme[self.case_id].word).title()
-#             return str(cases.lexeme[self.case_id].word)
-#         except:
-#             return word
-        
-
-#     def __str__(self) -> str:
-#         return " ".join(word for word in self.cased_list)
 from petrovich.main import Petrovich   
 from petrovich.enums import Case, Gender
 
@@ -60,3 +31,32 @@ class Morph:
     def __str__(self) -> str:
         return " ".join(word for word in self.cased_list)
        
+# import re
+# import pymorphy2
+
+# class Morph:
+#     def __init__(self, line, case_id) -> None:
+#         self.case_id = case_id
+#         self.splited_line = line.split()
+#         self.cased_list = []
+#         for word in self.splited_line:
+#             if word.istitle():
+#                 self.cased_list.append(self.get_word(word, True))
+#             else:
+#                 self.cased_list.append(self.get_word(word, False))
+
+#     def get_word(self, word, title):
+#         morph = pymorphy2.MorphAnalyzer()
+#         cases = morph.parse(word.strip())[0]
+#         try:
+#             # for index,word in enumerate(cases.lexeme):
+#             #     print(index,word.word)
+#             if title:
+#                 return str(cases.lexeme[self.case_id].word).title()
+#             return str(cases.lexeme[self.case_id].word)
+#         except:
+#             return word
+        
+
+#     def __str__(self) -> str:
+#         return " ".join(word for word in self.cased_list)

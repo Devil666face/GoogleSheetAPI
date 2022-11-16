@@ -1,5 +1,0 @@
-  File "bot.py", line 19
-    last_twenty_values:list
-                      ^
-SyntaxError: invalid syntax
-Updates were skipped successfully.
