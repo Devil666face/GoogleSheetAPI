@@ -72,6 +72,7 @@ class SheetAPI:
     
     def find_last_date_line(self):
         # for date_value in self.values:
+        print(self.values)
         date_dict = {index:date_value[0] for index, date_value in enumerate(self.values)}
         # print(self.date_dict)
         ordered_data = sorted(date_dict.items(), key = lambda x:datetime.strptime(x[1], "%d.%m.%Y %H:%M:%S"), reverse=True)
