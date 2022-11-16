@@ -54,6 +54,8 @@ async def get_month(message: types.Message,state: FSMContext):
         doc_name = MonthReport(month_number).write()
         await bot.send_document(message.from_user.id, InputFile(doc_name, filename=doc_name))
         os.remove(doc_name)
+    else:
+        await message.answer('Вы отправили некорректный номер.')
     await state.finish()
 
 
