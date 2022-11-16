@@ -1,0 +1,13 @@
+[Unit]
+Description=googlesheetbot daemon
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/root/www/GoogleSheetAPI
+ExecStart=nohup /root/www/GoogleSheetAPI/vend/bin/python /root/www/GoogleSheetAPI/bot.py 
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
