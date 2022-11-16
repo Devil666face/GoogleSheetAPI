@@ -6,7 +6,7 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/root/GoogleSheetAPI
-ExecStart=nohup /root/GoogleSheetAPI/vend/bin/python /root/GoogleSheetAPI/bot.py 
+ExecStart=nohup /root/GoogleSheetAPI/venv/bin/python /root/GoogleSheetAPI/bot.py 
 Restart=on-failure
 
 [Install]
