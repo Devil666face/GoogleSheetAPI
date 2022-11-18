@@ -97,8 +97,11 @@ class MonthReport:
         '''date = line[5] current_organization = line[2]'''
         values = list()
         for line in SheetAPI(Database()).values:
-            if str(line[5]).split('.')[1]==month and str(line[2]).find(organization)!=-1:
-                values.append(line)
+            try:
+                if str(line[5]).split('.')[1]==month and str(line[2]).find(organization)!=-1:
+                    values.append(line)
+            except Exception as ex:
+                print(f"{ex}\n{line}")
         return values
     
 
